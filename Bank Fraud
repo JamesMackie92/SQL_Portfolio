@@ -1,0 +1,72 @@
+### Read me ###
+
+Dataset used https://www.kaggle.com/datasets/valakhorasani/bank-transaction-dataset-for-fraud-detection load through sql import table data wizard to load dataset to test queries
+
+## Query 1 How many customers share occupation
+
+SELECT CustomerOccupation, count(*) as Amount
+FROM bank_transactions_data_2
+GROUP BY CustomerOccupation
+
+## Query 2 All Transactions from a single Account
+
+SELECT * 
+FROM bank_transactions_data_2
+WHERE AccountID = 'AC00042';
+
+## Query 3 All transactions for a certain month
+
+SELECT * 
+FROM bank_transactions_data_2 
+WHERE MONTH(TransactionDate) = 5 
+AND YEAR(TransactionDate) = 2023;
+
+## Query 4 Total amount of transactions by each account
+
+SELECT AccountID, SUM(TransactionAmount) AS TotalAmount 
+FROM bank_transactions_data_2
+GROUP BY AccountID 
+ORDER BY TotalAmount DESC;
+
+## Query 5 Average transaction amount by channel
+
+SELECT Channel, AVG(TransactionAmount) AS AverageAmount 
+FROM bank_transactions_data_2 
+GROUP BY Channel;
+
+## Query 6 Most popular merchants
+
+SELECT MerchantID, COUNT(*) AS TransactionCount 
+FROM bank_transactions_data_2
+GROUP BY MerchantID 
+ORDER BY TransactionCount DESC;
+
+## Query 7 Most recent transaction date
+
+SELECT AccountID, MAX(TransactionDate) AS LastTransactionDate 
+FROM bank_transactions_data_2
+GROUP BY AccountID;
+
+## Query 8 Transactions that took over 4 minutes
+
+SELECT TransactionID, TransactionDuration, TransactionType 
+FROM bank_transactions_data_2 
+WHERE TransactionDuration > 240;
+
+## Query 9 Accounts with multiple failed login attempts
+
+SELECT AccountID, LoginAttempts, TransactionDate 
+FROM bank_transactions_data_2 
+WHERE LoginAttempts > 3;
+
+## Query 10 Accounts with multiple transactions in different locations
+
+NOTE THIS QUERY BRINGS BACK 0 RESULTS BUT THE QUERY DOES RUN
+
+SELECT AccountID, Location, COUNT(*) AS TransactionCount 
+FROM bank_transactions_data_2
+GROUP BY AccountID, Location 
+HAVING COUNT(DISTINCT Location) > 1;
+
+
+
